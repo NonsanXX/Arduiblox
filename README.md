@@ -1,7 +1,7 @@
 # Arduiblox | Physical Computing Project 2024
 
 ### Project Overview
-Arduiblox is an innovative physical computing project developed by students at the Faculty of Information Technology, King Mongkut's Institute of Technology Ladkrabang (KMITL). This project aims to [brief description of your project's goals and objectives].
+โปรเจค Arduiblox ซึ่งประกอบด้วย Arduino Color Sequence and Piano ด้วยเพลง 4 บิต มีประโยชน์ในการฝึกสมาธิและพัฒนาทักษะต่างๆ เหมาะสำหรับทุกเพศทุกวัย การจดจำลำดับสีและเสียงช่วยกระตุ้นการทำงานของสมองและร่างกาย เสียงเพลง 4 บิตยังเสริมสร้างความคิดสร้างสรรค์ นอกจากนี้ การฝึกสมองอย่างต่อเนื่องสามารถลดความเสี่ยงของโรคอัลไซเมอร์ในผู้สูงอายุ โดยช่วยชะลอการเสื่อมของเซลล์สมอง โปรเจคนี้จึงเป็นเครื่องมือที่ดีในการพัฒนาสุขภาพจิตและการเรียนรู้ในระยะยาว
 
 ### Team Members
 
