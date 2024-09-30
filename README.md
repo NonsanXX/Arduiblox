@@ -12,4 +12,8 @@ Arduiblox is an innovative physical computing project developed by students at t
 | นายปฐมกานต์ สุวรรณน้อย | 66070285 |
 | นายภูริภัทร อรุณไพศาล | 66070305 |
 
+---
+
 © 2024 Arduiblox Team | IT KMITL
+
+
