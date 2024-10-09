@@ -109,7 +109,8 @@ void playSimonSequence() {
     delay(400);
   }
   Serial.println(" ]");
-  Serial.print("Your Input : [");
+  Serial.println("Your Input :");
+  Serial.print("[");
 
   gameState = 2;
   lcd.setCursor(0, 1);
@@ -154,6 +155,7 @@ void getPlayerInput() {
             if (currentLevel > maxLevel) {
               displayVictory();
               gameState = 0;
+              displayWelcomeSimon();
             } else {
               gameState = 1;  // Next level
             }
@@ -197,7 +199,7 @@ void displayVictory() {
   lcd.setCursor(0, 0);
   lcd.print("Congratulations!");
   lcd.setCursor(0, 1);
-  lcd.print("You Win!");
+  lcd.print("    You Win!    ");
 
   for (int i = 0; i < 3; i++) {
     tone(buzzer, 1000);
@@ -206,7 +208,6 @@ void displayVictory() {
     delay(200);
   }
   playSong();
-  noTone(buzzer);
   delay(2000);
 }
 
