@@ -1,6 +1,13 @@
+#include <WiFiS3.h>
+#include <HttpClient.h>
+#include <ArduinoJson.h>
 #include "LiquidCrystal_I2C.h"
 #include "SimonGame.h"
 // Include other game headers here as you add more games
+
+const char* ssid = "Good";      // Your SSID
+const char* password = "12345678";  // Your Password
+const char* serverAddress = "http://10.110.198.60:3000/api/scores";  // Full URL to your endpoint
 
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 #define buzzer 6
@@ -19,6 +26,10 @@ void setup() {
   pinMode(BUTTON_UP, INPUT_PULLUP);
   pinMode(BUTTON_DOWN, INPUT_PULLUP);
   pinMode(BUTTON_SELECT, INPUT_PULLUP);
+
+  // Connect to WiFi
+  connectToWiFi();
+
   displayWelcomeMessage();
   displayMenu();
 }
@@ -49,6 +60,42 @@ void loop() {
       while (digitalRead(BUTTON_SELECT) == LOW);
     }
   }
+}
+
+void connectToWiFi() {
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Connecting WiFi..");
+  
+  WiFi.begin(ssid, password);
+  
+  int attempts = 0;
+  while (WiFi.status() != WL_CONNECTED && attempts < 20) {
+    delay(500);
+    Serial.print(".");
+    attempts++;
+    // Update LCD with dots to show progress
+    lcd.setCursor(attempts % 16, 1);
+    lcd.print(".");
+  }
+
+  if (WiFi.status() == WL_CONNECTED) {
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("WiFi Connected!");
+    lcd.setCursor(0, 1);
+    lcd.print(WiFi.localIP());
+    Serial.println("\nConnected to WiFi network");
+    Serial.print("IP address: ");
+    Serial.println(WiFi.localIP());
+  } else {
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("WiFi Failed!");
+    lcd.setCursor(0, 1);
+    lcd.print("Check Settings");
+  }
+  delay(2000);
 }
 
 void displayMenu() {
