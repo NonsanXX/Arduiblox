@@ -1,5 +1,5 @@
 #include <WiFiS3.h>
-#include <HttpClient.h>
+
 #include <ArduinoJson.h>
 #include "LiquidCrystal_I2C.h"
 #include "SimonGame.h"
