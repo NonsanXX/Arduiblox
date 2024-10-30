@@ -61,6 +61,10 @@ app.get('/scores', (req, res) => {
     res.json(scores);
 });
 
+app.get('/', (req, res) => {
+    res.json({ message: 'Hello from the server!' });
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 const PORT = process.env.PORT || 3000;
