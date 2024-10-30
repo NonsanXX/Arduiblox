@@ -66,7 +66,6 @@ function updateScoreTable(scores) {
             hour24: true
         })}`;
 
-        console.log(formattedDate);
         const row = document.createElement('div');
         row.className = 'score-row';
         row.innerHTML = `
@@ -94,10 +93,12 @@ function fetchScores() {
     fetch('/api/scores')
         .then(response => response.json())
         .then(data => {
+            updateConnectionStatus('connected');
             updateScoreTable(data);
         })
         .catch(error => {
             console.error('Error fetching scores:', error);
+            updateConnectionStatus('error');
         });
 }
 
