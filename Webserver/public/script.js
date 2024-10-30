@@ -1,4 +1,12 @@
-const ws = new WebSocket(`wss://${window.location.host}`);
+const protocol = window.location.protocol === "https:" ? "wss://" : "ws://";
+const ws = new WebSocket(`${protocol}${window.location.host}`);
+
+ws.onopen = () => {
+    console.log('WebSocket connected');
+};
+
+// Remaining code...
+
 
 ws.onopen = () => {
     console.log('WebSocket connected');
