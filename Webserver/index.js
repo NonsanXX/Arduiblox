@@ -4,7 +4,6 @@ const path = require('path');
 const mqtt = require('mqtt');
 
 const app = express();
-const server = http.createServer(app);
 
 const clientId = "node_" + Math.random().toString(16).substring(2, 10);
 const host = "mqtt-dashboard.com";
@@ -65,8 +64,8 @@ app.get('/scores', (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+app.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}`);
 });
 
 process.on('SIGINT', () => {
@@ -76,3 +75,5 @@ process.on('SIGINT', () => {
         process.exit(0);
     });
 });
+
+exports = module.exports = app;
