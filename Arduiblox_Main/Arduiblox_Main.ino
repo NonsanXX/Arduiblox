@@ -3,6 +3,7 @@
 #include <ArduinoJson.h>
 #include "LiquidCrystal_I2C.h"
 #include "SimonGame.h"
+#include "PianoGame.h"
 // Include other game headers here as you add more games
 
 const char* ssid = "12625_KMITL_2.4G";      // Your SSID
@@ -22,9 +23,10 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 #define BUTTON_UP 3
 #define BUTTON_DOWN 4
 #define BUTTON_SELECT 2
+int buttons[4] = { 2, 3, 4, 5 };
 
 int currentSelection = 0;
-int numGames = 1; // Increase this as you add more games
+int numGames = 2; // Increase this as you add more games
 
 void setup() {
   Serial.begin(9600);
@@ -39,12 +41,17 @@ void setup() {
   connectToWiFi();
   InitMqtt();
 
-  displayWelcomeMessage();
   displayMenu();
+  displayWelcomeMessage();
 }
 
 void loop() {
-  HandleMqtt();
+  if (!mqttClient.connected())
+    {
+        ConnectMqtt();
+        displayMenu();
+    }
+    mqttClient.loop();
 
   if (digitalRead(BUTTON_UP) == LOW) {
     delay(50); // Debounce
@@ -87,6 +94,8 @@ String getGameName(int index) {
     case 0:
       return "Simon";
     // Add more cases as you add games
+    case 1:
+      return "PianoGame";
     default:
       return "Unknown";
   }
@@ -101,6 +110,11 @@ void launchGame(int index) {
         delay(2000);
       }
       break;
+    case 1:
+      if (playPianoGame()){
+        lcd.clear();
+        delay(2000);
+      }
     // Add more cases as you add games
     default:
       break;
@@ -180,19 +194,25 @@ void SubscribeMqtt(){
 }
 
 void ConnectMqtt(){
+    lcdCenterPrintTR("Connecting to", "MQTT Broker...");
+    
     Serial.print("Starting MQTT connection...");
     if (mqttClient.connect(MQTT_CLIENT_NAME))
     {
         SubscribeMqtt();
         Serial.println("MQTT CONNECTED!");
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print(" MQTT Connected! ");
+        lcd.setCursor(0, 1);
     }
     else
     {
         Serial.print("Failed MQTT connection, rc=");
         Serial.print(mqttClient.state());
-        Serial.println(" try again in 5 seconds");
+        Serial.println(" try again in 2 seconds");
 
-        delay(5000);
+        delay(2000);
     }
 }
 
@@ -202,4 +222,27 @@ void HandleMqtt(){
         ConnectMqtt();
     }
     mqttClient.loop();
+}
+
+void lcdCenterPrint(char *text){
+  lcd.setCursor(0, 1);            // Start at the beginning of the second row
+  lcd.print(" ");                  // Print a blank to help clear previous text
+  byte len = strlen(text); // Calculate length of the text
+  lcd.setCursor((16 - len) / 2, 1); // Set cursor to centered position
+  lcd.print(text);                  // Print the text to the LCD
+}
+
+void lcdCenterPrintTR(char *text1, char *text2){
+  // Clear the LCD
+  lcd.clear();
+
+  // First row
+  byte len1 = strlen(text1);                  // Calculate length of the first line
+  lcd.setCursor((16 - len1) / 2, 0);          // Set cursor to center of the first row
+  lcd.print(text1);                           // Print the first line
+
+  // Second row
+  byte len2 = strlen(text2);                  // Calculate length of the second line
+  lcd.setCursor((16 - len2) / 2, 1);          // Set cursor to center of the second row
+  lcd.print(text2);                           // Print the second line
 }

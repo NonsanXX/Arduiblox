@@ -103,4 +103,4 @@ function fetchScores() {
 }
 
 // Fetch scores every 5 seconds
-setInterval(fetchScores, 5000);
+setInterval(fetchScores, 500);

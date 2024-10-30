@@ -4,7 +4,6 @@
 
 extern LiquidCrystal_I2C lcd;
 
-int buttons[4] = { 2, 3, 4, 5 };
 int leds[4] = { 8, 9, 10, 11 };
 
 #define maxLevel 100
@@ -66,7 +65,12 @@ void displayWelcomeSimon() {
 
 bool waitForStart() {
   while (true) {
-    HandleMqtt();
+    if (!mqttClient.connected())
+    {
+        ConnectMqtt();
+        displayWelcomeSimon();
+    }
+    mqttClient.loop();
 
     if (digitalRead(buttons[0]) == LOW) { // Red button to start
       delay(50);  // Debounce
@@ -177,9 +181,16 @@ void getPlayerInput() {
 }
 
 void sendScoreToMQTT(int val) {
+  if (!mqttClient.connected())
+    {
+        ConnectMqtt();
+    }
+  mqttClient.loop();
+  if (val > 0){
   char buffer[50];
   snprintf(buffer, sizeof(buffer), "{ \"userid\": \"%s\", \"score\": %d }", MQTT_CLIENT_NAME, val);
   mqttClient.publish("arduiblox/simongame", buffer);
+  }
 }
 
 void displayGameOver() {
