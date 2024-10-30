@@ -34,6 +34,7 @@ bool playSimonGame() {
   displayWelcomeSimon();
 
   while (true) { // Continue until game over
+
     switch (gameState) {
       case 0: // Start game
         if (!waitForStart()) {
@@ -65,6 +66,8 @@ void displayWelcomeSimon() {
 
 bool waitForStart() {
   while (true) {
+    HandleMqtt();
+
     if (digitalRead(buttons[0]) == LOW) { // Red button to start
       delay(50);  // Debounce
       if (digitalRead(buttons[0]) == LOW) {
@@ -80,7 +83,7 @@ bool waitForStart() {
       delay(50);  // Debounce
       if (digitalRead(buttons[1]) == LOW) {
         playBackSound();
-        Serial.println("Returning to main menu");
+        Serial.println("Returning back to main menu");
         return false;
       }
     }
@@ -139,6 +142,8 @@ void getPlayerInput() {
 
           if (i != simonSequence[playerStep]) {
             Serial.println(" ]");
+            sendScoreToMQTT(currentLevel-1);
+
             gameState = 3;  // Game over
             playerStep = 0;
             return;
@@ -169,6 +174,12 @@ void getPlayerInput() {
 
     lastButtonState[i] = reading;
   }
+}
+
+void sendScoreToMQTT(int val){
+  char buffer[10]; // Adjust buffer size as needed
+  sprintf(buffer, "%d", val);
+  mqttClient.publish("arduiblox/simongame", buffer);
 }
 
 void displayGameOver() {

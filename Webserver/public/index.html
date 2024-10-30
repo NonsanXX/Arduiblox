@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Simon Game Leaderboard</title>
+    <link href="./output.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <img src="./assets/simonlogo-dmo.png" alt="Simon Game Logo" class="w-32 mx-auto mb-8" style="width: 150px; height: auto;">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">Simon Game Leaderboard</h1>
+            <p class="text-gray-600">Top Players Ranking</p>
+        </div>
+        <div id="connectionStatus" class="status-bar connecting">
+            <svg class="w-5 h-5 mr-2 animate-spin" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Connecting to MQTT...
+        </div>
+
+        <div class="scores-card">
+            <div class="header-row">
+                <div class="header-cell">Rank</div>
+                <div class="header-cell">Player</div>
+                <div class="header-cell">Score</div>
+                <div class="header-cell">Date</div>
+            </div>
+            <div id="scoreTableBody"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>
