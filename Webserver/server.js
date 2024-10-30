@@ -89,17 +89,17 @@ client.on('message', (topic, message) => {
 
 wss.on('connection', (ws) => {
     console.log('New WebSocket client connected');
-    
+
     // Send both MQTT status and scores to new client
-    ws.send(JSON.stringify({ 
-        type: 'mqttStatus', 
-        status: mqttStatus 
+    ws.send(JSON.stringify({
+        type: 'mqttStatus',
+        status: mqttStatus
     }));
-    
+
     // Always send scores regardless of MQTT status
-    ws.send(JSON.stringify({ 
-        type: 'scores', 
-        data: scores 
+    ws.send(JSON.stringify({
+        type: 'scores',
+        data: scores
     }));
 
     ws.on('close', () => {
@@ -115,9 +115,9 @@ function broadcastMqttStatus() {
     wss.clients.forEach((client) => {
         if (client.readyState === WebSocket.OPEN) {
             try {
-                client.send(JSON.stringify({ 
-                    type: 'mqttStatus', 
-                    status: mqttStatus 
+                client.send(JSON.stringify({
+                    type: 'mqttStatus',
+                    status: mqttStatus
                 }));
             } catch (e) {
                 console.error('Broadcast error:', e);
@@ -130,9 +130,9 @@ function broadcastScores() {
     wss.clients.forEach((client) => {
         if (client.readyState === WebSocket.OPEN) {
             try {
-                client.send(JSON.stringify({ 
-                    type: 'scores', 
-                    data: scores 
+                client.send(JSON.stringify({
+                    type: 'scores',
+                    data: scores
                 }));
             } catch (e) {
                 console.error('Broadcast error:', e);

@@ -7,7 +7,7 @@ extern LiquidCrystal_I2C lcd;
 int buttons[4] = { 2, 3, 4, 5 };
 int leds[4] = { 8, 9, 10, 11 };
 
-#define maxLevel 10
+#define maxLevel 100
 
 int simonSequence[100];
 int currentLevel = 1;
@@ -176,9 +176,9 @@ void getPlayerInput() {
   }
 }
 
-void sendScoreToMQTT(int val){
-  char buffer[10]; // Adjust buffer size as needed
-  sprintf(buffer, "%d", val);
+void sendScoreToMQTT(int val) {
+  char buffer[50];
+  snprintf(buffer, sizeof(buffer), "{ \"userid\": \"%s\", \"score\": %d }", MQTT_CLIENT_NAME, val);
   mqttClient.publish("arduiblox/simongame", buffer);
 }
 
@@ -206,6 +206,7 @@ void displayGameOver() {
 }
 
 void displayVictory() {
+  sendScoreToMQTT(maxLevel);
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print("Congratulations!");
