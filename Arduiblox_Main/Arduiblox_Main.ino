@@ -57,6 +57,7 @@ void loop() {
     delay(50); // Debounce
     if (digitalRead(BUTTON_UP) == LOW) {
       currentSelection = (currentSelection - 1 + numGames) % numGames;
+      changeSubjectTone();
       displayMenu();
       while (digitalRead(BUTTON_UP) == LOW);
     }
@@ -66,6 +67,7 @@ void loop() {
     delay(50); // Debounce
     if (digitalRead(BUTTON_DOWN) == LOW) {
       currentSelection = (currentSelection + 1) % numGames;
+      changeSubjectTone();
       displayMenu();
       while (digitalRead(BUTTON_DOWN) == LOW);
     }
@@ -115,7 +117,7 @@ void launchGame(int index) {
         lcd.clear();
         delay(2000);
       }
-    // Add more cases as you add games
+    // add more games here
     default:
       break;
   }
@@ -123,10 +125,7 @@ void launchGame(int index) {
 }
 
 void displayWelcomeMessage() {
-  lcd.setCursor(0, 0);
-  lcd.print("   Welcome To   ");
-  lcd.setCursor(0, 1);
-  lcd.print(">  Arduiblox  <");
+  lcdCenterPrintTR("Welcome to", "> Arduiblox! <");
   delay(2000);
   lcd.clear();
   tone(buzzer, 1000);
@@ -143,6 +142,7 @@ void connectToWiFi() {
   
   int attempts = 0;
   while (WiFi.status() != WL_CONNECTED && attempts < 20) {
+    waitingToConnectTone();
     delay(500);
     Serial.print(".");
     attempts++;
@@ -160,6 +160,7 @@ void connectToWiFi() {
     Serial.println("\nConnected to WiFi network");
     Serial.print("IP address: ");
     Serial.println(WiFi.localIP());
+    connectionSuccessTone();
   } else {
     lcd.clear();
     lcd.setCursor(0, 0);
@@ -195,26 +196,28 @@ void SubscribeMqtt(){
 
 void ConnectMqtt(){
     lcdCenterPrintTR("Connecting to", "MQTT Broker...");
-    
     Serial.print("Starting MQTT connection...");
-    if (mqttClient.connect(MQTT_CLIENT_NAME))
-    {
-        SubscribeMqtt();
-        Serial.println("MQTT CONNECTED!");
-        lcd.clear();
-        lcd.setCursor(0, 0);
-        lcd.print(" MQTT Connected! ");
-        lcd.setCursor(0, 1);
-    }
-    else
-    {
+
+    while (!mqttClient.connect(MQTT_CLIENT_NAME)) {
+        waitingToConnectTone(); // Repeat waiting tone
+
         Serial.print("Failed MQTT connection, rc=");
         Serial.print(mqttClient.state());
         Serial.println(" try again in 2 seconds");
 
-        delay(2000);
+        delay(2000); // Delay before trying again
     }
+
+    // Connection succeeded
+    SubscribeMqtt();
+    Serial.println("MQTT CONNECTED!");
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print(" MQTT Connected! ");
+    lcd.setCursor(0, 1);
+    connectionSuccessTone();
 }
+
 
 void HandleMqtt(){
     if (!mqttClient.connected())
@@ -245,4 +248,53 @@ void lcdCenterPrintTR(char *text1, char *text2){
   byte len2 = strlen(text2);                  // Calculate length of the second line
   lcd.setCursor((16 - len2) / 2, 1);          // Set cursor to center of the second row
   lcd.print(text2);                           // Print the second line
+}
+
+void playSelectSound(){
+      tone(buzzer, 1000);
+      delay(100);
+      noTone(buzzer);
+}
+
+void playBackSound(){
+      tone(buzzer, 500);
+      delay(100);
+      noTone(buzzer);
+}
+
+void waitingToConnectTone() {
+    for (int i = 0; i < 3; i++) { // Repeat 3 times
+        tone(buzzer, 200); // Low tone
+        delay(100);
+        noTone(buzzer);
+        delay(100); // Short pause
+        tone(buzzer, 400); // Higher tone
+        delay(100);
+        noTone(buzzer);
+        delay(300); // Longer pause before repeating
+    }
+}
+
+void connectionSuccessTone() {
+    tone(buzzer, 500);
+    delay(100);
+    noTone(buzzer);
+    delay(50);
+    tone(buzzer, 700);
+    delay(100);
+    noTone(buzzer);
+    delay(50);
+    tone(buzzer, 900);
+    delay(100);
+    noTone(buzzer);
+}
+
+void changeSubjectTone() {
+    tone(buzzer, 600);
+    delay(150);
+    noTone(buzzer);
+    delay(100); // Short pause between tones
+    tone(buzzer, 600);
+    delay(150);
+    noTone(buzzer);
 }

@@ -61,6 +61,11 @@ app.get('/api/scores', (req, res) => {
     res.json(scores);
 });
 
+app.get('/api/scores/clear', (req, res) => {
+    scores = [];
+    res.json(scores);
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 const PORT = process.env.PORT || 3000;

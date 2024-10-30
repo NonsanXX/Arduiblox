@@ -21,7 +21,7 @@ const int upperRangeFreqs[] = {
 const int FREQ_ADJUSTMENT_RANGE = 50;
 
 bool playPianoGame() {
-  displayPianoStatus("Piano Mode", "R:Play Y:Back");
+  displayPianoStatus("Piano Mode", "R:Play B:Back");
   // Set up game-specific pins
   for (int i = 0; i < 4; i++) {
     pinMode(buttons[i], INPUT_PULLUP);
@@ -33,6 +33,7 @@ bool playPianoGame() {
     if (digitalRead(buttons[3]) == LOW) {
       delay(50);  // Debounce
       if (digitalRead(buttons[3]) == LOW) {
+        playBackSound();
         return false;  // Exit to main menu
       }
     }
@@ -85,6 +86,7 @@ bool playPianoGame() {
 }
 
 void displayPianoStatus(const char* line1, const char* line2) {
+  playSelectSound();
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print(line1);

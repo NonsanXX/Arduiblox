@@ -60,7 +60,7 @@ void displayWelcomeSimon() {
   lcd.print("   Simon Game   ");
   lcd.setCursor(0, 1);
   lcd.print(" R:Start Y:Back ");
-  playEnterSound();
+  playSelectSound();
 }
 
 bool waitForStart() {
@@ -77,7 +77,7 @@ bool waitForStart() {
       if (digitalRead(buttons[0]) == LOW) {
         currentLevel = 1;
         gameState = 1;
-        playEnterSound();
+        playSelectSound();
         Serial.println("Game Started!");
         lcd.clear();
         return true;
@@ -376,16 +376,4 @@ void playSong() {
     //stop the tone playing:
     noTone(buzzer);
   }
-}
-
-void playEnterSound(){
-      tone(buzzer, 1000);
-      delay(100);
-      noTone(buzzer);
-}
-
-void playBackSound(){
-      tone(buzzer, 500);
-      delay(100);
-      noTone(buzzer);
 }

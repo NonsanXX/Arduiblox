@@ -102,5 +102,5 @@ function fetchScores() {
         });
 }
 
-// Fetch scores every 5 seconds
-setInterval(fetchScores, 500);
+// Fetch scores every 3 seconds
+setInterval(fetchScores, 3000);
