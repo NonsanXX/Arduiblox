@@ -57,11 +57,11 @@ client.on('message', (topic, message) => {
     }
 });
 
-app.use(express.static(path.join(__dirname, 'public')));
-
 app.get('/scores', (req, res) => {
     res.json(scores);
 });
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
@@ -75,5 +75,3 @@ process.on('SIGINT', () => {
         process.exit(0);
     });
 });
-
-exports = module.exports = app;
