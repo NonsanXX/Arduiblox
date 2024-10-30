@@ -28,7 +28,7 @@ const client = mqtt.connect(`mqtt://${host}`, {
 });
 
 client.on('connect', () => {
-    console.log("Connected to MQTT broker");
+    console.log(`Connected to MQTT broker at ${host}`);
     mqttStatus = 'connected';
     client.subscribe(topic, (err) => {
         if (err) {

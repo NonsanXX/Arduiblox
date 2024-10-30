@@ -80,9 +80,32 @@ body {
     font-weight: 500;
 }
 
+.rank-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
 .rank-trophy {
-    font-size: 1.5rem;
-    text-align: center;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem; /* For emojis */
+}
+
+.rank-number {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem; /* For numbers */
+    font-weight: 600;
+    color: #666;
 }
 
 .date-cell {
