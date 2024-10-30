@@ -1,4 +1,33 @@
-const scoreTableBody = document.getElementById('scoreTableBody');
+const wsProtocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+const ws = new WebSocket(`${wsProtocol}://${window.location.host}`);
+
+ws.onopen = () => {
+    console.log('WebSocket connected');
+};
+
+// Remaining code...
+
+
+ws.onopen = () => {
+    console.log('WebSocket connected');
+};
+
+ws.onclose = () => {
+    console.log('WebSocket disconnected');
+    setTimeout(() => {
+        window.location.reload();
+    }, 5000);
+};
+
+ws.onmessage = (event) => {
+    const message = JSON.parse(event.data);
+
+    if (message.type === 'mqttStatus') {
+        updateConnectionStatus(message.status);
+    } else if (message.type === 'scores') {
+        updateScoreTable(message.data);
+    }
+};
 
 function updateConnectionStatus(status) {
     const statusDiv = document.getElementById('connectionStatus');
@@ -21,7 +50,7 @@ function updateConnectionStatus(status) {
                 <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                 </svg>`;
-
+            
             break;
         case 'error':
             statusText = 'MQTT Connection Error - Retrying in 5s...';
@@ -89,17 +118,3 @@ function updateScoreTable(scores) {
         tableBody.appendChild(row);
     });
 }
-
-function fetchScores() {
-    fetch('/scores')
-        .then(response => response.json())
-        .then(data => {
-            updateScoreTable(data);
-        })
-        .catch(error => {
-            console.error('Error fetching scores:', error);
-        });
-}
-
-// Fetch scores every 5 seconds
-setInterval(fetchScores, 5000);
