@@ -10,5 +10,5 @@
             "use": "@vercel/static"
         }
     ],
-    "rewrites": [{ "source": "/(.*)", "destination": "/public" }]
+    "rewrites": [{ "source": "/(.*)", "destination": "/" }]
 }
