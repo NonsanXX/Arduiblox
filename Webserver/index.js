@@ -61,7 +61,7 @@ app.get('/scores', (req, res) => {
     res.json(scores);
 });
 
-app.use(express.static(path.join(__dirname, 'public')));
+//app.use(express.static(path.join(__dirname, 'public')));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
