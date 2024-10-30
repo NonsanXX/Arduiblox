@@ -10,19 +10,5 @@
             "use": "@vercel/static"
         }
     ],
-    "routes":[
-        {
-            "src": "/api/(.*)",
-            "dest": "server.js"
-        },
-        {
-            "src": "/",
-            "dest": "/public/index.html"
-        },
-        {
-            "src": "/(.*)",
-            "dest": "/public/$1"
-        }
-    ],
     "rewrites": [{ "source": "/(.*)", "destination": "/public" }]
 }
