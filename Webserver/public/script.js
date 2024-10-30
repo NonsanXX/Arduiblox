@@ -91,7 +91,7 @@ function updateScoreTable(scores) {
 }
 
 function fetchScores() {
-    fetch('/scores')
+    fetch('/api/scores')
         .then(response => response.json())
         .then(data => {
             updateScoreTable(data);
