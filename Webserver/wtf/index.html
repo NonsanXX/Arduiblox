@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Simon Game High Scores</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mqtt/5.10.1/mqtt.min.js"></script>
+    <script src="script.js" type="text/javascript"></script>
+</head>
+
+<body>
+    <h1>Simon Game High Scores</h1>
+    <div id="connectionStatus" class="connection-status disconnected">Disconnected</div>
+    <div class="scores-container">
+        <table id="scoreTable">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Player</th>
+                    <th>Score</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody id="scoreTableBody">
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
