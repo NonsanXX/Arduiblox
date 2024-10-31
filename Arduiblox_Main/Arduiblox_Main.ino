@@ -6,8 +6,11 @@
 #include "PianoGame.h"
 // Include other game headers here as you add more games
 
-const char* ssid = "12625_KMITL_2.4G";      // Your SSID
-const char* password = "77501463";  // Your Password
+// const char* ssid = "12625_KMITL_2.4G";      // Your SSID
+// const char* password = "77501463";  // Your Password
+
+const char* ssid = "Good";      // Your SSID
+const char* password = "12345678";  // Your Password
 
 // MQTT constants
 // broker address, port, and client name
