@@ -30,9 +30,9 @@ bool playPianoGame() {
 
   while (true) {
     // Check for exit condition (Yellow button)
-    if (digitalRead(buttons[3]) == LOW) {
+    if (digitalRead(buttons[0] == LOW && buttons[1]) == LOW) {
       delay(50);  // Debounce
-      if (digitalRead(buttons[3]) == LOW) {
+      if (digitalRead(buttons[0]) == LOW && buttons[1] == LOW) {
         playBackSound();
         return false;  // Exit to main menu
       }
@@ -53,7 +53,7 @@ bool playPianoGame() {
     int frequencyToPlay = 0;
 
     // Check each button and apply the appropriate base frequency
-    for (int i = 0; i < 3; i++) {
+    for (int i = 3; i >= 0; i++) {
       if (digitalRead(buttons[i]) == LOW) {
         if (isUpperRange) {
           frequencyToPlay = upperRangeFreqs[i] + frequencyAdjustment;
