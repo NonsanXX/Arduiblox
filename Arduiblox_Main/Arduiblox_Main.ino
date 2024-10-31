@@ -199,7 +199,7 @@ void SubscribeMqtt(){
 
 void ConnectMqtt(){
     lcdCenterPrintTR("Connecting to", "MQTT Broker...");
-    Serial.print("Starting MQTT connection...");
+    Serial.println("Starting MQTT connection...");
 
     while (!mqttClient.connect(MQTT_CLIENT_NAME)) {
         waitingToConnectTone(); // Repeat waiting tone
