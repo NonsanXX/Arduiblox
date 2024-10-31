@@ -21,7 +21,7 @@ const int upperRangeFreqs[] = {
 const int FREQ_ADJUSTMENT_RANGE = 50;
 
 bool playPianoGame() {
-  displayPianoStatus("Piano Mode", "R:Play B:Back");
+  displayPianoStatus("Piano Mode", "R:Play R&Y:Back");
   // Set up game-specific pins
   for (int i = 0; i < 4; i++) {
     pinMode(buttons[i], INPUT_PULLUP);
@@ -30,12 +30,13 @@ bool playPianoGame() {
 
   while (true) {
     // Check for exit condition (two button)
-    if (digitalRead(buttons[0] == LOW && buttons[1]) == LOW) {
-      delay(50);  // Debounce
-      if (digitalRead(buttons[0]) == LOW && buttons[1] == LOW) {
-        playBackSound();
-        return false;  // Exit to main menu
-      }
+    if (digitalRead(buttons[0]) == LOW && digitalRead(buttons[1]) == LOW) {
+        delay(50);  // Debounce
+        // Check again after delay to confirm both buttons are still pressed
+        if (digitalRead(buttons[0]) == LOW && digitalRead(buttons[1]) == LOW) {
+            playBackSound();
+            return false;  // Exit to main menu
+        }
     }
 
     int potValue = analogRead(PIANO_POT_PIN);

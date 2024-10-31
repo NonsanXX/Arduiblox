@@ -97,10 +97,10 @@ void displayMenu() {
 String getGameName(int index) {
   switch (index) {
     case 0:
-      return "Simon";
+      return "Simon Game";
     // Add more cases as you add games
     case 1:
-      return "PianoGame";
+      return "Piano Game";
     default:
       return "Unknown";
   }
