@@ -2,6 +2,7 @@
 #include "pitches.h"
 
 const int PIANO_POT_PIN = A3;
+int leds[] = { 8, 9, 10, 11 };
 
 // Define base frequencies for both ranges
 const int lowerRangeFreqs[] = {
@@ -70,6 +71,17 @@ bool playPianoGame() {
     }
 
     if (buttonPressed) {
+      if (digitalRead(buttons[0] == LOW && digitalRead(buttons[1] == LOW)  {
+        digitalWrite(leds[0], HIGH);
+        digitalWrite(leds[1], HIGH);
+        digitalWrite(leds[2], HIGH);
+        digitalWrite(leds[3], HIGH);
+      for(int i = 0; i<4; i++) {
+        if (digitalRead(buttons[i] == LOW) {
+          digitalWrite(leds[i], HIGH);
+        }
+      }
+
       tone(buzzer, frequencyToPlay);
 
       // Debug output
