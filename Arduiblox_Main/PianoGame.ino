@@ -2,7 +2,6 @@
 #include "pitches.h"
 
 const int PIANO_POT_PIN = A3;
-int leds[] = { 8, 9, 10, 11 };
 
 // Define base frequencies for both ranges
 const int lowerRangeFreqs[] = {
@@ -22,24 +21,29 @@ const int upperRangeFreqs[] = {
 const int FREQ_ADJUSTMENT_RANGE = 50;
 
 bool playPianoGame() {
+  unsigned long previousMillis = 0;             // For potentiometer reading and tone updates
+  unsigned long ledOnTime[4] = { 0, 0, 0, 0 };  // Stores the time each LED was turned on
+  const int ledDuration = 200;                  // Duration for which each LED should stay on
+
   displayPianoStatus("Piano Mode", "R:Play R&Y:Back");
   // Set up game-specific pins
   for (int i = 0; i < 4; i++) {
     pinMode(buttons[i], INPUT_PULLUP);
+    pinMode(leds[i], OUTPUT);
   }
   pinMode(buzzer, OUTPUT);
 
   while (true) {
-    // Check for exit condition (two button)
+    // Check for exit condition (two buttons)
     if (digitalRead(buttons[0]) == LOW && digitalRead(buttons[1]) == LOW) {
-        delay(50);  // Debounce
-        // Check again after delay to confirm both buttons are still pressed
-        if (digitalRead(buttons[0]) == LOW && digitalRead(buttons[1]) == LOW) {
-            playBackSound();
-            return false;  // Exit to main menu
-        }
+      delay(50);  // Debounce
+      if (digitalRead(buttons[0]) == LOW && digitalRead(buttons[1]) == LOW) {
+        playBackSound();
+        break;  // Exit to main menu
+      }
     }
 
+    unsigned long currentMillis = millis();  // Current time in milliseconds
     int potValue = analogRead(PIANO_POT_PIN);
     bool isUpperRange = potValue > 512;
 
@@ -66,23 +70,23 @@ bool playPianoGame() {
 
         // Update display with current note and frequency
         updatePianoDisplay(frequencyToPlay, isUpperRange);
+
+        // Turn on the LED without delay
+        digitalWrite(leds[i], HIGH);
+        ledOnTime[i] = currentMillis;  // Record the time this LED was turned on
         break;
       }
     }
 
-    if (buttonPressed) {
-      if (digitalRead(buttons[0] == LOW && digitalRead(buttons[1] == LOW)  {
-        digitalWrite(leds[0], HIGH);
-        digitalWrite(leds[1], HIGH);
-        digitalWrite(leds[2], HIGH);
-        digitalWrite(leds[3], HIGH);
-      for(int i = 0; i<4; i++) {
-        if (digitalRead(buttons[i] == LOW) {
-          digitalWrite(leds[i], HIGH);
-        }
+    // Turn off LEDs after their duration has passed
+    for (int i = 0; i < 4; i++) {
+      if (digitalRead(leds[i]) == HIGH && (currentMillis - ledOnTime[i] >= ledDuration)) {
+        digitalWrite(leds[i], LOW);  // Turn off the LED after 500 ms
       }
+    }
 
-      tone(buzzer, frequencyToPlay);
+    if (buttonPressed) {
+      tone(buzzer, frequencyToPlay);  // Play the tone at the calculated frequency
 
       // Debug output
       Serial.print("Range: ");
@@ -92,11 +96,17 @@ bool playPianoGame() {
       Serial.print(" Adjustment: ");
       Serial.println(frequencyAdjustment);
     } else {
-      noTone(buzzer);
+      noTone(buzzer);  // Stop the tone if no button is pressed
     }
+  }
+
+  // After exiting the loop, turn on all LEDs (optional behavior)
+  for (int i = 0; i < 4; i++) {
+    digitalWrite(leds[i], HIGH);
   }
   return true;  // Game completed, return to main menu
 }
+
 
 void displayPianoStatus(const char* line1, const char* line2) {
   playSelectSound();

@@ -27,6 +27,7 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 #define BUTTON_DOWN 4
 #define BUTTON_SELECT 2
 int buttons[4] = { 2, 3, 4, 5 };
+int leds[4] = { 8, 9, 10, 11 };
 
 int currentSelection = 0;
 int numGames = 2; // Increase this as you add more games
@@ -86,6 +87,10 @@ void loop() {
 }
 
 void displayMenu() {
+  digitalWrite(leds[0], LOW);
+  digitalWrite(leds[1], LOW);
+  digitalWrite(leds[2], LOW);
+  digitalWrite(leds[3], LOW);
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print("Select a game:");

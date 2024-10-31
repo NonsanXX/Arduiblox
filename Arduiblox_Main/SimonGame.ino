@@ -4,7 +4,6 @@
 
 extern LiquidCrystal_I2C lcd;
 
-int leds[4] = { 8, 9, 10, 11 };
 
 #define maxLevel 100
 
