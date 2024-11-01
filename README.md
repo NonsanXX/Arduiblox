@@ -15,6 +15,7 @@
 ## Poster
 
 ![ArduiBlox Poster](/assets_for_docs/ArduiBlox-Poster.png)
+[VIEW PDF](/assets_for_docs/ArduiBlox-poster.pdf)
 
 ## Video Showcase
 
